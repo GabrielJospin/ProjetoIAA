@@ -10,7 +10,9 @@ public class Reader {
     public final static int MAX = 50;
 
     public static Vector[] read(int pag){
-        final String PATH = String.format("../Resources/vetor%d.txt",pag);
+
+        final String PATH = String.format("Resources/vetor%d.txt",pag);
+
         BufferedReader bufferedReader;
         String[] text;
         double[][] vector = new double[MAX][pag];

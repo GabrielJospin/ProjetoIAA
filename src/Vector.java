@@ -1,3 +1,4 @@
+import javax.swing.plaf.synth.SynthEditorPaneUI;
 
 public class Vector {
     int length;
@@ -24,6 +25,14 @@ public class Vector {
         System.out.println(")");
 
     }
+    public void print(int stop){
+        System.out.printf("Imprimindo %s de tamanho %d:( ", name, stop);
+        for(int i = 0; i < stop; i++){
+            System.out.printf("%.2f; " , vector[i]);
+        }
+        System.out.println(")");
+
+    }
 
     public boolean isNotEmpty() {
         int count = 0;
@@ -35,38 +44,30 @@ public class Vector {
     }
 
 
-    private static void moveVector(Vector vector, int position){
+    public static void binaryInsertionSort (Vector vector, int length) throws Exception{
+        int order = 1;
 
-        double helper = vector.vector[position];
-        if(position == 0){
-            vector.vector[position]=helper;
-            System.out.println(position);
-            return;
-        }
-        vector.vector[position] = vector.vector[position-1];
-        moveVector(vector,position-1);
-
-    }
-
-
-
-    public static void binaryInsertionSort (Vector vector, int length) {
-        int location = 0;
-        double helper;
-
-        for (int i = 1; i < length; ++i)
-        {
-            int j = i;
-            helper = vector.vector[i];
-            location = binarySearch(vector, j,helper);
-            while((j>0) && (vector.vector[j-1] > helper)){
-                vector.vector[j] = vector.vector[j-1];
-                j -= 1;
+        while(order<length){
+            double helper = vector.vector[order-1];
+            int location = binarySearch(vector,order,helper);
+            if(helper != vector.vector[location]){
+                String error = String.format(" the object %f is different to %f in %d ", helper, vector.vector[location],location);
+                throw new Exception(error);
             }
 
-            vector.vector[j] = helper;
+            int iteration = order-1;
+            if(vector.vector[location]>vector.vector[location+1]){
+                while((iteration>= 0) && vector.vector[iteration+1]<=vector.vector[iteration]){
+                    double aux = vector.vector[iteration];
+                    vector.vector[iteration] = vector.vector[iteration+1];
+                    vector.vector[iteration+1] = aux;
+                    iteration--;
+                }
+            }
+            order++;
         }
     }
+
 
     public static void binaryInsertionSortR(Vector vector, int position){
         if(position == 0)
@@ -83,7 +84,11 @@ public class Vector {
 
 
 
-    public static int binarySearch(Vector vector,int length,double key){
+    public static int binarySearch(Vector vector,int length,double key) throws Exception {
+
+        if(length == 1 && vector.vector[length] == key){
+            return 0;
+        }
 
         int floor = 0;
         int top = length-1;
@@ -97,14 +102,16 @@ public class Vector {
             else
                 top = middle - 1;
         }
-
-        return -1;
+        String error = String.format("Error: Not found %f in vector",key);
+        throw new Exception(error);
     }
 
-    public static int binarySearchR(Vector vector, double key, int floor, int top){
+    public static int binarySearchR(Vector vector, double key, int floor, int top) throws Exception {
         int middle = (floor+top)/2;
-        if(floor>top)
-            return  -1;
+        if(floor>top){
+            String error = String.format("Error: Not found %f in vector",key);
+            throw new Exception(error);
+        }
         if(key == vector.vector[middle])
             return middle;
         if(key > vector.vector[middle])
@@ -129,4 +136,10 @@ public class Vector {
 
         }
     }
+
+    public static void insertionSort(Vector vector){
+
+    }
+
+
 }

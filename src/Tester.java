@@ -16,7 +16,12 @@ public class Tester {
         long firstPrintTime = System.currentTimeMillis() - readTime;
 
         for(int i = 0; i <test.length; i++){
-            test[i].binaryInsertionSort(test[i],test[i].length);
+            try{
+                test[i].binaryInsertionSort(test[i],test[i].length);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
         long insertionSortMediumTime = (System.currentTimeMillis() - firstPrintTime);
@@ -30,7 +35,11 @@ public class Tester {
 
         for(int i = 0; i < test.length;i++){
             if(test[i].isNotEmpty())
-                System.out.print(Vector.binarySearch(test[i],test[i].length,test[i].vector[i%TESTEFOR]));
+                try{
+                    System.out.print(Vector.binarySearch(test[i],test[i].length,test[i].vector[i%TESTEFOR]));
+                }catch (Exception e){
+                    System.out.print(-1);
+                }
 
         }
 
@@ -39,8 +48,12 @@ public class Tester {
         long binarySearchMediumTime = System.currentTimeMillis() - secondPrintTime;
 
         for(int i = 0; i<test.length;i++){
-            if(test[i].isNotEmpty())
-                System.out.print(Vector.binarySearchR(test[i],test[i].vector[i%TESTEFOR],0,test[i].length-1));
+            if(test[i].isNotEmpty())try{
+                Vector.binarySearchR(test[i],test[i].vector[i%TESTEFOR],0,test[i].length-1);
+
+            }catch (Exception e){
+                System.out.print(-1);
+            }
 
         }
 
