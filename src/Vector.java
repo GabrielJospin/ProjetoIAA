@@ -1,4 +1,3 @@
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 
 public class Vector {
     int length;
@@ -14,11 +13,11 @@ public class Vector {
     Vector(double[] vector, int length){
         this.length = length;
         this.vector = vector;
-        this.name = String.format("Vetor de %d", vector.length);
+        this.name = String.format("Vector");
     }
 
     public void print(){
-        System.out.printf("Imprimindo %s de tamanho %d:( ", name, length);
+        System.out.printf("Printing %s of size %d:( ", name, length);
         for(int i = 0; i < length; i++){
                 System.out.printf("%.2f; " , vector[i]);
         }
@@ -44,42 +43,40 @@ public class Vector {
     }
 
 
-    public static void binaryInsertionSort (Vector vector, int length) throws Exception{
+
+    public static void binaryInsertionSort (Vector  vector, int length) throws Exception{
         int order = 1;
 
         while(order<length){
-            double helper = vector.vector[order-1];
+            double helper = vector.vector[order];
             int location = binarySearch(vector,order,helper);
-            if(helper != vector.vector[location]){
-                String error = String.format(" the object %f is different to %f in %d ", helper, vector.vector[location],location);
-                throw new Exception(error);
+            int iteration = order;
+            while((iteration>location)) {
+                vector.vector[iteration] = vector.vector[iteration-1];
+                iteration--;
             }
-
-            int iteration = order-1;
-            if(vector.vector[location]>vector.vector[location+1]){
-                while((iteration>= 0) && vector.vector[iteration+1]<=vector.vector[iteration]){
-                    double aux = vector.vector[iteration];
-                    vector.vector[iteration] = vector.vector[iteration+1];
-                    vector.vector[iteration+1] = aux;
-                    iteration--;
-                }
-            }
+            vector.vector[location] = helper;
             order++;
         }
     }
 
 
-    public static void binaryInsertionSortR(Vector vector, int position){
-        if(position == 0)
+    public static void binaryInsertionSortR(Vector vector, int position) throws Exception {
+        if(position>=vector.length){
             return;
-        int j = position-1;
-        double helper = vector.vector[j];
-        while((j>0) && (vector.vector[j-1] > helper)){
-            vector.vector[j] = vector.vector[j-1];
-            j -= 1;
         }
-        vector.vector[j] = helper;
-        binaryInsertionSortR(vector,j);
+
+        double helper = vector.vector[position];
+        int location = binarySearchR(vector,helper,0,position);
+
+        int iteration = position -1;
+            while((iteration>location)) {
+                vector.vector[iteration] = vector.vector[iteration-1];
+                iteration--;
+            }
+        vector.vector[location] = helper;
+        binaryInsertionSortR(vector,position+1);
+
     }
 
 
@@ -89,12 +86,11 @@ public class Vector {
         if(length == 1 && vector.vector[length] == key){
             return 0;
         }
-
+        int middle;
         int floor = 0;
         int top = length-1;
-
         while(floor <= top){
-            int middle = (floor+top)/2;
+            middle = (floor+top)/2;
             if (key == vector.vector[middle])
                 return middle;
             if(key > vector.vector[middle])
@@ -102,15 +98,13 @@ public class Vector {
             else
                 top = middle - 1;
         }
-        String error = String.format("Error: Not found %f in vector",key);
-        throw new Exception(error);
+        return top+1;
     }
 
     public static int binarySearchR(Vector vector, double key, int floor, int top) throws Exception {
         int middle = (floor+top)/2;
         if(floor>top){
-            String error = String.format("Error: Not found %f in vector",key);
-            throw new Exception(error);
+            return top+1;
         }
         if(key == vector.vector[middle])
             return middle;
@@ -137,8 +131,21 @@ public class Vector {
         }
     }
 
-    public static void insertionSort(Vector vector){
+    public static void insertionSortR(Vector vector,int length){
+        if(length<=1){
+            return;
+        }
+        insertionSortR(vector,length-1);
 
+        double last = vector.vector[length-1];
+        int j = length-2;
+
+        while(j >= 0 && vector.vector[j] > last){
+            vector.vector[j+1] = vector.vector[j];
+            j--;
+        }
+
+        vector.vector[j+1] = last;
     }
 
 
